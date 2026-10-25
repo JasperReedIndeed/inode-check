@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Two agent folders, one database — inode-check</title>
+<meta name="description" content="A read-only way to see whether two agent folders resolve to the same file. Free, MIT, Python, no dependencies. Explains what the check establishes and what it cannot.">
+<link rel="canonical" href="https://jasperreedindeed.github.io/inode-check/">
+<style>
+  :root{--ink:#0d2a1c;--paper:#f7f7f7;--accent:#f6e016;--muted:#5a6b60;--rule:#dfe3de}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Jost,Helvetica,Arial,sans-serif}
+  .wrap{max-width:44rem;margin:0 auto;padding:56px 24px 96px}
+  h1{font-size:clamp(28px,5vw,44px);line-height:1.05;letter-spacing:-.02em;margin:0 0 18px}
+  h2{font-size:20px;margin:44px 0 12px;letter-spacing:-.01em}
+  p{margin:0 0 16px}
+  .lede{font-size:19px;color:#20372b;max-width:38rem}
+  .tag{display:inline-block;background:var(--accent);color:var(--ink);font-size:13px;font-weight:600;letter-spacing:.02em;padding:6px 10px;margin-bottom:22px}
+  pre{background:var(--ink);color:#e8f0ea;padding:18px 20px;overflow-x:auto;font-size:14px;line-height:1.5;margin:0 0 18px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+  ul{padding-left:20px;margin:0 0 16px}
+  li{margin:0 0 8px}
+  a{color:#0d5c37;text-underline-offset:2px}
+  .note{border-left:3px solid var(--rule);padding:2px 0 2px 16px;color:var(--muted);font-size:15px}
+  footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <span class="tag">free · MIT · no dependencies</span>
+  <h1>Two agent folders, one database</h1>
+  <p class="lede">If two AI agents were set up as separate deployments, they can still end up on the same state file. The usual symptoms are a locked database, memories that bleed between agents, or one agent refusing to start because another holds it.</p>
+
+  <p>You can check it in one command. The check compares the <em>metadata</em> of two paths; it does not open anything.</p>
+
+<pre><code>python3 -B inode-check.py /srv/agent-a /srv/agent-b</code></pre>
+
+  <p>Two paths that look different can be the same file: a hardlink, a symlink, or a parent folder that contains the other. The script compares device and inode numbers and the resolved path, then says which case you are in.</p>
+
+  <ul>
+    <li><code>0</code> — different file identities and no resolved nesting. Not a security pass.</li>
+    <li><code>1</code> — same file, or one path resolves inside the other.</li>
+    <li><code>2</code> — could not check. A failed check is not a clean result.</li>
+  </ul>
+
+  <h2>What it does not tell you</h2>
+  <p>It does not compare contents, so two ordinary copies with identical bytes will pass as distinct — which they are, on disk. It does not read config, credentials, or conversation data, so it cannot tell you whether the two agents have the <em>same settings</em>. It does not test containers, network mounts or other filesystems, where identity rules differ.</p>
+  <p class="note">This is a same-machine sanity check, not an isolation audit and not a security certificate. A live filesystem can change while you are looking at it.</p>
+
+  <h2>Get it</h2>
+  <p>Source, tests and limits: <a href="https://github.com/JasperReedIndeed/inode-check">github.com/JasperReedIndeed/inode-check</a>. Eight tests, synthetic fixtures, MIT licensed.</p>
+  <p>The script prints the paths you gave it. Redact them before pasting output anywhere.</p>
+
+  <footer>
+    Maintained by Jasper Reed. The repository also links a separate paid tool for comparing several deployments at once and producing a redacted report; this checker works on its own and no purchase is needed. No incident or upstream endorsement is claimed.
+  </footer>
+</div>
+</body>
+</html>
