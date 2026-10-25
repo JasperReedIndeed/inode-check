@@ -1,5 +1,7 @@
 # inode-check
 
+**Database is locked, or state showing up under the wrong agent?** Two folders that look separate can be one file on disk — a hardlink, a symlink alias, or one path nested inside the other. This is a small, read-only check for exactly that question.
+
 A small, AI-assisted Python utility comparing two existing paths by filesystem metadata. Free source; MIT licensed. It never opens config, credential, database or conversation contents.
 
 ## What the check establishes

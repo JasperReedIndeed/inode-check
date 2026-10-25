@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Two agent folders, one database — inode-check</title>
-<meta name="description" content="A read-only way to see whether two agent folders resolve to the same file. Free, MIT, Python, no dependencies. Explains what the check establishes and what it cannot.">
+<title>Database is locked? Check whether two agent folders are the same file — inode-check</title>
+<meta name="description" content="A database is locked, or memories under the wrong agent, can come from two folders that are really one file. Read-only inode check: same device+inode, symlink alias, or nested path. Free, MIT, Python, no dependencies.">
 <link rel="canonical" href="https://jasperreedindeed.github.io/inode-check/">
 <style>
   :root{--ink:#0d2a1c;--paper:#f7f7f7;--accent:#f6e016;--muted:#5a6b60;--rule:#dfe3de}
@@ -28,7 +28,7 @@
 <body>
 <div class="wrap">
   <span class="tag">free · MIT · no dependencies</span>
-  <h1>Two agent folders, one database</h1>
+  <h1>Two agent folders, one file</h1>
   <p class="lede">If two AI agents were set up as separate deployments, they can still end up on the same state file. The usual symptoms are a locked database, memories that bleed between agents, or one agent refusing to start because another holds it.</p>
 
   <p>You can check it in one command. The check compares the <em>metadata</em> of two paths; it does not open anything.</p>
